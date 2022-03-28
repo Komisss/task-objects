@@ -1,3 +1,5 @@
+import { stringify } from 'querystring';
+
 /*
   В функцию personUpdate() приходят данные в виде объекта, содержащую некую информацию о человеке.
   Если этот человек является женщиной (свойство gender содержит значение 'female'), то из этого объекта
@@ -8,6 +10,17 @@
   Объект после манипуляций следует вернуть в качестве результата работы функции.
 */
 export function personUpdate(data) {
+    if (data.gender == 'female') {
+        if (data.hasOwnProperty('age')) {
+            delete data.age;
+        }
+    }
+    if (data.gender == 'male') {
+        if (!data.hasOwnProperty('income')) {
+            data.income = 100000;
+        }
+    }
+    return data;
 }
 
 /*
@@ -15,6 +28,15 @@ export function personUpdate(data) {
   Верните список названий этих полей в алфавитном порядке в виде массива строк.
 */
 export function objectFieldsList(obj1, obj2, obj3) {
+    let fields = [],
+        objFields1 = Object.keys(obj1),
+        objFields2 = Object.keys(obj2),
+        objFields3 = Object.keys(obj3);
+
+    fields = [...objFields1, ...objFields2, ...objFields3];
+
+    fields.sort();
+    return fields;
 }
 
 /*
@@ -23,4 +45,14 @@ export function objectFieldsList(obj1, obj2, obj3) {
   Количество клонов - count.
 */
 export function objectClone(obj, count) {
+    let newObjects = [];
+
+    for (let i = 0; i < count; i++) {
+        let newObject = {};
+        newObject = JSON.parse(JSON.stringify(obj));
+        newObject.id = i;
+        newObjects.push(newObject);
+    }
+
+    return newObjects;
 }
